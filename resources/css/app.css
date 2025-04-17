@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.accordion-button:not(.collapsed) {
+    background-color: #515151 !important; /* Change to any color */
+    color: white !important;
+    font-weight: bold;
+    box-shadow: none;
+}
+
+.accordion-button:not(.collapsed)::after {
+    filter: invert(1); /* Makes it white */
+}
+
+.accordion-body{
+    border-left: 1px #b3b3b3 solid;
+    border-right: 1px #b3b3b3 solid;
+    border-bottom: 1px #b3b3b3 solid;
+    box-shadow: rgba(181, 181, 181, 0.34) 5px 5px 5px;
+    border-radius: 0 0 3px 3px;
+}
+
+.adManager>.active{
+    background-color: #F3F6F8 !important;
+    border-radius: 0px !important;
+}
+
+.adManager{
+    border-top: rgba(202, 202, 202, 0.42) solid .5px;
+    border-right: rgba(202, 202, 202, 0.42) solid .5px;
+}
+::placeholder {
+    color: gray !important;
+    opacity: 1;
+}
