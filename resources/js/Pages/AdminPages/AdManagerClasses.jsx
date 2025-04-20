@@ -7,7 +7,7 @@ import {Icon} from "@iconify/react";
 import {Bounce, toast, ToastContainer} from "react-toastify";
 
 
-function Dashboard(props) {
+function AdManagerClasses(props) {
     const [datas, setDatas] = useState([]);
     const [show, setShow] = useState(false);
 
@@ -296,4 +296,4 @@ function Dashboard(props) {
     );
 }
 
-export default Dashboard;
+export default AdManagerClasses;

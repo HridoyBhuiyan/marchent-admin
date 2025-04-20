@@ -34,6 +34,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/ad-manager',[AdManager::class,'index'])->name('ad.manager');
     Route::post('/new-ad-manager',[AdManager::class,'create'])->name('ad.managerAdd');
     Route::post('/update-ad-manager',[AdManager::class,'update'])->name('ad.managerUpdate');
+
+    Route::get('/ad-manager/expired-soon',[AdManager::class,'expiredSoon'])->name('ad.manager.expiredSoon');
+    Route::get('/ad-manager/well-life',[AdManager::class,'wellLife'])->name('ad.manager.wellLife');
+    Route::get('/ad-manager/used',[AdManager::class,'used'])->name('ad.manager.used');
+    Route::get('/ad-manager/unused',[AdManager::class,'unused'])->name('ad.manager.unused');
+
 });
 
 

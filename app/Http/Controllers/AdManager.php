@@ -12,18 +12,11 @@ use Carbon\Carbon;
 class AdManager extends Controller
 {
     public function index(){
-         $data = AdManagerData::orderBy('id', 'desc')->paginate(7);
+        $data = AdManagerData::orderBy('id', 'desc')->paginate(7);
         return Inertia::render('AdminPages/AdManager',['data'=>$data]);
     }
 
     public function create(Request $request){
-
-        $request->validate([
-            "accessToken" => "",
-        ], [
-            "accessToken.unique" => "Wrong Access Token",
-        ]);
-
         $tokenDate = Carbon::now()->addDays(60)->format('d/m/Y');
         $adManagerId = $request->input('adManagerId');
         $appID = $request->input('appId');
@@ -41,8 +34,6 @@ class AdManager extends Controller
             'latest_fund_request' => 0,
         ]);
 
-
-
         return Redirect::back()->with([
             'message' => "New AD manager added successfully",
             'status' => 200
@@ -50,7 +41,41 @@ class AdManager extends Controller
     }
 
     public function update(Request $request){
-        return $request;
+
+        $adManager = AdManagerData::find($request->input('id'));
+
+
+        // Check if the access token is the same as the existing one
+        if ($adManager->access_token === $request->input('accessToken')) {
+
+            return response()->json(['status' => 'not_updated', 'message' => 'Access token is the same. No update performed.'],304);
+        }
+
+        else{
+            $adManager->access_token = $request->input('accessToken');
+            $adManager->token_expired_on = Carbon::now()->addDays(60)->format('d/m/Y');
+            $adManager->save();
+            return response()->json(['status' => 'updated', 'message' => 'Access token updated successfully.']);
+        }
+
     }
+
+
+    public function expiredSoon(Request $request){
+        $data = AdManagerData::orderBy('id', 'desc')->paginate(7);
+        return Inertia::render('AdminPages/AdManagerClasses',['data'=>$data]);
+    }
+    public function wellLife(Request $request){
+
+    }
+    public function used(Request $request){
+
+    }
+    public function unused(Request $request){
+
+    }
+
+
+
 
 }
