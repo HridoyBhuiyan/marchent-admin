@@ -12,12 +12,12 @@ use Carbon\Carbon;
 class AdManager extends Controller
 {
     public function index(){
-        $data = AdManagerData::orderBy('id', 'desc')->paginate(7);
+        $data = AdManagerData::with("user")->orderBy('id', 'desc')->paginate(7);
         return Inertia::render('AdminPages/AdManager',['data'=>$data]);
     }
 
     public function create(Request $request){
-        $tokenDate = Carbon::now()->addDays(60)->format('d/m/Y');
+        $tokenDate = Carbon::now()->addDays(60);
         $adManagerId = $request->input('adManagerId');
         $appID = $request->input('appId');
         $accessToken = $request->input('accessToken');
@@ -45,7 +45,6 @@ class AdManager extends Controller
         $adManager = AdManagerData::find($request->input('id'));
 
 
-        // Check if the access token is the same as the existing one
         if ($adManager->access_token === $request->input('accessToken')) {
 
             return response()->json(['status' => 'not_updated', 'message' => 'Access token is the same. No update performed.'],304);
@@ -62,17 +61,68 @@ class AdManager extends Controller
 
 
     public function expiredSoon(Request $request){
-        $data = AdManagerData::orderBy('id', 'desc')->paginate(7);
-        return Inertia::render('AdminPages/AdManagerClasses',['data'=>$data]);
-    }
-    public function wellLife(Request $request){
 
-    }
-    public function used(Request $request){
+        $today = Carbon::today()->format('d/m/Y');
+        $next7Days = Carbon::today()->addDays(7);
 
+        $data = AdManagerData::with("user")
+            ->whereDate('token_expired_on', '>=', $today)
+            ->whereDate('token_expired_on', '<=', $next7Days)
+            ->orderBy('id', 'desc')
+            ->paginate(7);
+
+        return Inertia::render('AdminPages/AdManagerClasses',
+            [
+                'data'=>$data,
+                'pageTitle'=>'Expired Soon',
+                'color'=>'bg-danger'
+                ]
+        );
     }
+
+    public function wellLife(){
+        $next7Days = Carbon::today()->addDays(7);
+
+        $data = AdManagerData::with("user")
+            ->whereDate('token_expired_on', '>=', $next7Days)
+            ->orderBy('id', 'desc')
+            ->paginate(7);
+
+        return Inertia::render('AdminPages/AdManagerClasses',
+            [
+                'data'=>$data,
+                'pageTitle'=>'Well Life Span',
+                'color'=>'bg-success']);
+    }
+
+
+    public function used(){
+        $data = AdManagerData::with("user")
+            ->whereNot('user_id', 1)
+            ->orderBy('id', 'desc')
+            ->paginate(7);
+
+        return Inertia::render('AdminPages/AdManagerClasses',
+            [
+                'data'=>$data,
+                'pageTitle'=>'Used AD manager',
+                'color'=>'bg-secondary'
+                ]);
+    }
+
+
     public function unused(Request $request){
+        $data = AdManagerData::with('user')
+            ->where('user_id', 1)
+            ->orderBy('id', 'desc')
+            ->paginate(7);
 
+        return Inertia::render('AdminPages/AdManagerClasses',
+            [
+                'data'=>$data,
+                'pageTitle'=>'Unused AD manager',
+                'color'=>'bg-info'
+                ]);
     }
 
 

@@ -79,7 +79,7 @@ export default function Authenticated({ auth, header, children }) {
 
                                                 <li className="sidebar-item">
                                                     <Link className="sidebar-link sidebar-link primary-hover-bg"
-                                                          href="#" id="get-url">
+                                                          href={route('merchant.page')} id="get-url">
                                                     <span className="aside-icon p-2 bg-primary-subtle rounded-1">
                                                         <Icon icon="wpf:administrator" className="fs-6"/>
                                                     </span>

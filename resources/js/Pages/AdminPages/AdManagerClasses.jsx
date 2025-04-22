@@ -37,17 +37,17 @@ function AdManagerClasses(props) {
 
         <AuthenticatedLayout auth={props.auth} errors={props.errors}
                              header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Ad Manager</h2>}>
-            <Head title="AD Manager"/>
+            <Head title={props.pageTitle}/>
 
 
 
             <div className="row">
                 <div className="mb-3 overflow-hidden position-relative">
-                    <div className="px-3"><h4 className="fs-6 mb-0">AD Manager</h4>
+                    <div className="px-3"><h4 className="fs-6 mb-0">{props.pageTitle}</h4>
                         <nav aria-label="breadcrumb">
                             <ol className="breadcrumb mb-0">
                                 <li className="breadcrumb-item"><a href="/">Home</a></li>
-                                <li className="breadcrumb-item" aria-current="page">Manage AD managers</li>
+                                <li className="breadcrumb-item" aria-current="page">AD Managers</li>
                             </ol>
                         </nav>
                     </div>
@@ -58,15 +58,19 @@ function AdManagerClasses(props) {
 
 
             <div className={'mb-2 d-flex align-items-center'}>
-                    <Button variant={'primary'} className={'border-primary m-2 rounded-1 d-flex align-items-center'}  onClick={handleShow}>
-                        <Icon icon={'ic:outline-add-box'} className={'fw-6'}/>&nbsp;&nbsp;
-                        New AD manager
-                    </Button>
 
+                <Link href={route('ad.manager.expiredSoon')}>
                     <Button variant={'danger'} className={' m-2'}>Expire Soon</Button>
+                </Link>
+                <Link href={route('ad.manager.wellLife')}>
                     <Button variant={'success'} className={' m-2'}>Well Life</Button>
+                </Link>
+                <Link href={route('ad.manager.used')}>
                     <Button variant={'secondary'} className={' m-2'}>Used</Button>
+                </Link>
+                <Link href={route('ad.manager.unused')}>
                     <Button variant={"info"} className={' m-2'}>Unused</Button>
+                </Link>
             </div>
 
 
@@ -85,7 +89,7 @@ function AdManagerClasses(props) {
                                                     <div className="position-relative w-100 ms-2">
                                                         <div className="d-flex align-items-center justify-content-between mb-2">
                                                             {
-                                                                item.user_id==1?<span className="badge text-bg-primary">Usable</span>
+                                                                item.user_id==1?<span className="badge bg-success text-bg-primary">Usable</span>
                                                                     :
                                                                     <span className="badge text-bg-primary">Occupied</span>
                                                             }
@@ -107,14 +111,18 @@ function AdManagerClasses(props) {
                                 {datas.map((item, index) => {
                                     return(
                                         <Tab.Pane eventKey={index} key={index}>
-                                            <div className={'border-bottom text-center py-2 fw-semibold text-white bg-gray-500'}>
+                                            <div className={`border-bottom text-center py-2 fw-semibold text-white ${props.color}`}>
                                                 ADM ID: {item.ad_manager}
                                             </div>
                                             <div className={'p-3'}>
                                                 <p className={' d-flex align-items-center'}>User Name:
-                                                    <Link href={'https://meta.business.com/app'} className={'text-orange-400  d-flex align-items-center'}>Hridoy Bhuiyan
-                                                    <Icon icon={'fa-solid:external-link-alt'} className={'fw-6'}/>
-                                                    </Link>
+                                                    {item.user_id==1?
+                                                        <div> No User</div>
+                                                        :
+                                                        <Link href={'https://meta.business.com/app'} className={'text-orange-400  d-flex align-items-center'}>{item.user.name}
+                                                            <Icon icon={'fa-solid:external-link-alt'} className={'fw-6'}/>
+                                                        </Link>
+                                                    }
                                                 </p>
                                                 <p className={'d-flex align-items-center'}>App ID:
                                                     <span>

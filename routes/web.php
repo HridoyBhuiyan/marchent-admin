@@ -29,19 +29,18 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [Dashboard::class,'index'])->name('dashboard');
-    Route::get('/fund-managment',[FundManagment::class,'index'])->name('fund.page');
+    Route::get('/fund-management',[FundManagment::class,'index'])->name('fund.page');
     Route::post('/update-fund',[FundManagment::class,'store'])->name('fund.update');
     Route::get('/ad-manager',[AdManager::class,'index'])->name('ad.manager');
     Route::post('/new-ad-manager',[AdManager::class,'create'])->name('ad.managerAdd');
     Route::post('/update-ad-manager',[AdManager::class,'update'])->name('ad.managerUpdate');
-
     Route::get('/ad-manager/expired-soon',[AdManager::class,'expiredSoon'])->name('ad.manager.expiredSoon');
     Route::get('/ad-manager/well-life',[AdManager::class,'wellLife'])->name('ad.manager.wellLife');
     Route::get('/ad-manager/used',[AdManager::class,'used'])->name('ad.manager.used');
     Route::get('/ad-manager/unused',[AdManager::class,'unused'])->name('ad.manager.unused');
+    Route::get('/merchant',[\App\Http\Controllers\Merchants::class,'index'])->name('merchant.page');
 
 });
-
 
 
 require __DIR__.'/auth.php';

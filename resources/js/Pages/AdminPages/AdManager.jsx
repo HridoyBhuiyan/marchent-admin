@@ -62,11 +62,18 @@ function Dashboard(props) {
                         <Icon icon={'ic:outline-add-box'} className={'fw-6'}/>&nbsp;&nbsp;
                         New AD manager
                     </Button>
-
+                <Link href={route('ad.manager.expiredSoon')}>
                     <Button variant={'danger'} className={' m-2'}>Expire Soon</Button>
+                </Link>
+                <Link href={route('ad.manager.wellLife')}>
                     <Button variant={'success'} className={' m-2'}>Well Life</Button>
+                </Link>
+                <Link href={route('ad.manager.used')}>
                     <Button variant={'secondary'} className={' m-2'}>Used</Button>
+                </Link>
+                <Link href={route('ad.manager.unused')}>
                     <Button variant={"info"} className={' m-2'}>Unused</Button>
+                </Link>
             </div>
 
 
@@ -85,7 +92,7 @@ function Dashboard(props) {
                                                     <div className="position-relative w-100 ms-2">
                                                         <div className="d-flex align-items-center justify-content-between mb-2">
                                                             {
-                                                                item.user_id==1?<span className="badge text-bg-primary">Usable</span>
+                                                                item.user_id==1?<span className="badge  bg-success text-bg-primary">Usable</span>
                                                                     :
                                                                     <span className="badge text-bg-primary">Occupied</span>
                                                             }
@@ -112,9 +119,14 @@ function Dashboard(props) {
                                             </div>
                                             <div className={'p-3'}>
                                                 <p className={' d-flex align-items-center'}>User Name:
-                                                    <Link href={'https://meta.business.com/app'} className={'text-orange-400  d-flex align-items-center'}>Hridoy Bhuiyan
-                                                    <Icon icon={'fa-solid:external-link-alt'} className={'fw-6'}/>
-                                                    </Link>
+                                                    {item.user_id==1?
+                                                        <div> No User</div>
+                                                        :
+                                                        <Link href={'https://meta.business.com/app'} className={'text-orange-400  d-flex align-items-center'}>{item.user.name}
+                                                            <Icon icon={'fa-solid:external-link-alt'} className={'fw-6'}/>
+                                                        </Link>
+                                                    }
+
                                                 </p>
                                                 <p className={'d-flex align-items-center'}>App ID:
                                                     <span>
