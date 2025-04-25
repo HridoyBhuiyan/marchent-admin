@@ -5,6 +5,7 @@ use App\Http\Controllers\AdManagment;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\FundManagement;
 use App\Http\Controllers\FundManagment;
+use App\Http\Controllers\Merchants;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -38,7 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/ad-manager/well-life',[AdManager::class,'wellLife'])->name('ad.manager.wellLife');
     Route::get('/ad-manager/used',[AdManager::class,'used'])->name('ad.manager.used');
     Route::get('/ad-manager/unused',[AdManager::class,'unused'])->name('ad.manager.unused');
-    Route::get('/merchant',[\App\Http\Controllers\Merchants::class,'index'])->name('merchant.page');
+    Route::get('/merchant',[Merchants::class,'index'])->name('merchant.page');
 
 });
 
