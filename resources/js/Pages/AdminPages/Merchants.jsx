@@ -1,16 +1,70 @@
-import React, {useState, useMemo, useEffect} from 'react';
-import {Table, FormControl, InputGroup, Pagination, Button, Row, Col} from 'react-bootstrap';
-import {Head, Link} from '@inertiajs/react';
+import React, {useState, useEffect} from 'react';
+import {Table, FormControl, InputGroup, Button, Row, Col, Form, Modal,} from 'react-bootstrap';
+import {Head, Link, router, useForm} from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import {Icon} from "@iconify/react";
+
 
 function Merchants(props) {
     const [data, setData] = useState();
     const [link, setLink] = useState();
+    const [show, setShow] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     useEffect(() => {
+        console.log(apiUrl);
         setData(props.data.data);
         setLink(props.data.links);
     },[data])
+
+    const searchOnChange=(e)=>{
+        let searchQuery = e.target.value;
+        if(searchQuery==null){
+            console.log("this is from null")
+        }
+        else {
+            console.log("this is from something")
+        }
+        router.get(route('merchant.page'), { search: searchQuery }, {
+            preserveState: true,
+            replace: true,
+        });
+        setData(props.data.data);
+        setLink(props.data.links);
+    }
+
+
+    const addNewUser=(e)=>{
+        e.preventDefault()
+        const userName = document.getElementById("usernameID").value;
+        const email = document.getElementById("emailID").value;
+        if (userName.trim() !== '' && email.trim() !== ''){
+            setLoading(true)
+            axios.post('/make-merchant',{
+                email: email,
+                userName:userName,
+            })
+                .then((res)=>{
+
+                    if (res.data.data.status==200 && res.data.success==true){
+                        setData(props.data.data);
+                        setLink(props.data.links);
+                        setLoading(false)
+                        let id = res.data.data.id;
+                        router.visit(`/user/${id}`);
+                    }else {
+                        setLoading(false)
+                        console.log(res.data.data.id);
+                    }
+                })
+        }
+
+
+
+    }
 
     return (
         <AuthenticatedLayout
@@ -23,26 +77,26 @@ function Merchants(props) {
             <div className="container mt-4">
                 <div className="mb-3">
                     <h4>Merchants</h4>
-                    <div className="mb-3">
-                    <InputGroup>
-                        <FormControl placeholder="Search by name or email"/>
-                        <InputGroup.Text className={'bg-info text-white'}>Search</InputGroup.Text>
-                    </InputGroup>
-                        <div className={'bg-white p-3 rounded-1'}>
-                            <Row className={'fw-bold text-dark'}>
-                                <Col lg={4}>
-                                    Name
-                                </Col>
-                                <Col lg={4}>
-                                    Email
-                                </Col>
-                                <Col lg={4}>
-                                    Profile URL
-                                </Col>
-                            </Row>
-                            <hr/>
-                        </div>
-                    </div>
+                    <Row className="mb-3">
+                        <Col lg={3}>
+                            <Button className={'w-100 rounded-2 d-flex align-items-center justify-center'}  onClick={handleShow}>
+                                <Icon icon={'icon-park-outline:add'} className={'fw-6'}/>
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;Add New Merchant</span>
+                                </Button>
+                        </Col>
+
+
+                        <Col lg={9}>
+                            <InputGroup className={'m-0'}>
+                                <FormControl placeholder="Search by name or email" onChange={searchOnChange} className={'rounded-2'}/>
+                                <InputGroup.Text className={'bg-info text-white'}>Search</InputGroup.Text>
+                            </InputGroup>
+                        </Col>
+
+
+
+
+                    </Row>
 
                     <Table striped bordered hover responsive>
                         <thead>
@@ -63,7 +117,10 @@ function Merchants(props) {
                                     <td>{item.name}</td>
                                     <td>{item.email}</td>
                                     <td>${item.info===null?"No ADM":item.info.limit}</td>
-                                    <td><Button>Profile URL</Button></td>
+                                    <td><Link href={`/user/${item.id}`} className={'d-flex align-items-center text-primary'}>
+                                        <Icon icon={'quill:link-out'}/>&nbsp;
+                                        Profile URL
+                                    </Link></td>
                                 </tr>
                             )})}
 
@@ -84,8 +141,59 @@ function Merchants(props) {
                         ))}
                     </div>
 
-
                 </div>
+
+
+                <Modal show={show} onHide={handleClose} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Make New Merchant</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+
+                        <Form onSubmit={addNewUser}>
+                            <Form.Label htmlFor="inputPassword5">User Name</Form.Label>
+                            <Form.Control type="text" placeholder={'User name here'} className={'mb-3'} id={'usernameID'}/>
+                            <Form.Label htmlFor="inputPassword5">Email</Form.Label>
+                            <Form.Control type="email" placeholder={'Email address here'}  className={'mb-3'} id={'emailID'}/>
+                            <Form.Label htmlFor="inputPassword5">Password</Form.Label>
+                            <div className={'border-1 p-2 bg-gray-100 rounded-1'}>marchant123</div>
+
+                            <hr/>
+
+
+                            {
+                                loading==true?
+                                    <div className={'d-flex justify-content-start'}>
+                                        <Button type={"submit"} variant={'secondary'} className={'rounded-1 w-50 mr-2'}>
+                                            <div className={'d-flex align-items-center justify-content-center'}>
+                                                <Icon icon={'eos-icons:three-dots-loading'} className={'fw-6'}/>
+                                                <span>Adding</span>
+                                            </div>
+                                        </Button>
+                                        <Button variant="danger" className={'rounded-1 w-50 ml-2'}>Close</Button>
+                                    </div>
+                                    :
+                                    <div className={'d-flex justify-content-start'}>
+                                        <Button type={"submit"} variant={'secondary'} className={'rounded-1 w-50 mr-2'}>
+                                            <div>Add Merchant</div>
+                                        </Button>
+                                        <Button variant="danger" onClick={handleClose} className={'rounded-1 w-50 ml-2'}>Close</Button>
+                                    </div>
+                            }
+
+
+
+
+                        </Form>
+
+
+                    </Modal.Body>
+
+                </Modal>
+
+
+
+
             </div>
         </AuthenticatedLayout>
     );

@@ -40,7 +40,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/ad-manager/used',[AdManager::class,'used'])->name('ad.manager.used');
     Route::get('/ad-manager/unused',[AdManager::class,'unused'])->name('ad.manager.unused');
     Route::get('/merchant',[Merchants::class,'index'])->name('merchant.page');
+    Route::post('/make-merchant',[Merchants::class,'store'])->name('add.merchant.page');
 
+
+    Route::get('/user/{id}',[Merchants::class,'show'])->name('user.page');
+
+
+});
+
+
+Route::get('/scout-import', function () {
+    \App\Models\MerchantModel::chunk(100, function ($merchants) {
+        foreach ($merchants as $merchant) {
+            $merchant->searchable(); // This manually indexes it
+        }
+    });
+    return 'Merchant index created!';
 });
 
 

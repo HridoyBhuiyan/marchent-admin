@@ -34,3 +34,6 @@
     color: gray !important;
     opacity: 1;
 }
+.modal-lg>.modal-content{
+    border-radius: 5px !important;
+}
