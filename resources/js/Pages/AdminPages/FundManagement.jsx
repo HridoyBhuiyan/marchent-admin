@@ -86,7 +86,7 @@ function FundManagement(props) {
                                                     </div>
                                                 </Col>
                                                 <Col lg={5} md={5} sm={5} className={'align-items-center d-flex'}>
-                                                    ৳{JSON.parse(allData.transaction_history).amount}
+                                                    {/*৳{JSON.parse(allData.transaction_history).amount}*/}
                                                 </Col>
                                             </Row>
                                         </Accordion.Header>
@@ -124,11 +124,10 @@ function FundManagement(props) {
                                                             <div className="gap-3">
                                                                 <div>
                                                                     Fund Claim:
-                                                                    <span
-                                                                        className="h5 fs-4 fw-semibold pb-3"> ৳{JSON.parse(allData.transaction_history).amount} = ${JSON.parse(allData.transaction_history).amount/130} </span>
+                                                                    {/*<span className="h5 fs-4 fw-semibold pb-3"> ৳{JSON.parse(allData.transaction_history).amount} = ${JSON.parse(allData.transaction_history).amount/130} </span>*/}
                                                                     <br/>
                                                                     Payment method:
-                                                                    <span className="h5 fs-4 fw-semibold"> {JSON.parse(allData.transaction_history).method} </span>
+                                                                    {/*<span className="h5 fs-4 fw-semibold"> {JSON.parse(allData.transaction_history).method} </span>*/}
                                                                 </div>
 
                                                                 <div className={'pt-3'}>
@@ -153,10 +152,10 @@ function FundManagement(props) {
                                                                 <div>
                                                                     Add Fund:
                                                                     <div className="form-group pt-2">
-                                                                        <input type="number" className="form-control rounded-2"
-                                                                               defaultValue={JSON.parse(allData.transaction_history).amount}
-                                                                               id={`extendedAmountID${allData.user_id}`}
-                                                                        />
+                                                                        {/*<input type="number" className="form-control rounded-2"*/}
+                                                                        {/*       defaultValue={JSON.parse(allData.transaction_history).amount}*/}
+                                                                        {/*       id={`extendedAmountID${allData.user_id}`}*/}
+                                                                        {/*/>*/}
                                                                     </div>
                                                                 </div>
 

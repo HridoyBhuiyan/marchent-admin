@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdManagerData;
+use App\Models\BillManagement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -11,8 +12,8 @@ class FundManagment extends Controller
 {
     function index()
     {
-        $adManagerData = AdManagerData::where(['latest_fund_request'=>true])->with('user:id,name,avatar')->get();
-        return Inertia::render('AdminPages/FundManagement', ['fundData'=>$adManagerData]);
+        $data = BillManagement::with('adManager:user_id,app_id')->with('user:id,name,avatar')->get();;
+        return Inertia::render('AdminPages/FundManagement', ['fundData'=>$data]);
     }
 
     function store(Request $request)
